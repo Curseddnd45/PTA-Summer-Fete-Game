@@ -243,6 +243,62 @@ function gameLoop () {
         }
     }
 }
+function drawFeteMap (): Image {
+    let mapImg = image.create(160, 120)
+    let bgColor = 7
+    let pathColor = 13
+    let buildingColor = 8
+    let buildingLabel = "SCHOOL"
+    let buildingLabelX = 37
+    let buildingTextColor = 1
+    let entranceColor = 6
+    let stallBgColor = 5
+    let stallNumColor = 14
+    let stallBorderColor = 1
+    if (feteName == "The Fête Worse Than Death") {
+        bgColor = 14
+        pathColor = 2
+        buildingColor = 15
+        buildingLabel = "DOOM HALL"
+        buildingLabelX = 27
+        buildingTextColor = 2
+        entranceColor = 4
+        stallBgColor = 10
+        stallNumColor = 1
+        stallBorderColor = 2
+    } else if (feteName.indexOf("Zx") >= 0) {
+        bgColor = 6
+        pathColor = 9
+        buildingColor = 10
+        buildingLabel = "MOTHERSHIP"
+        buildingLabelX = 22
+        buildingTextColor = 5
+        entranceColor = 8
+        stallBgColor = 3
+        stallNumColor = 14
+        stallBorderColor = 5
+    }
+    mapImg.fill(bgColor)
+    mapImg.fillRect(0, 0, 110, 28, buildingColor)
+    mapImg.print(buildingLabel, buildingLabelX, 11, buildingTextColor)
+    mapImg.fillRect(112, 0, 48, 28, entranceColor)
+    mapImg.print("ENTRANCE", 113, 11, buildingTextColor)
+    mapImg.fillRect(0, 28, 160, 5, pathColor)
+    let chosenStalls = stalls.filter(s => s.chosen == true)
+    let stallXPos = [2, 34, 66, 98, 130]
+    let stallYPos = [34, 62, 90]
+    for (let i = 0; i < chosenStalls.length && i < 15; i++) {
+        let col = i % 5
+        let row = Math.floor(i / 5)
+        let px = stallXPos[col]
+        let py = stallYPos[row]
+        mapImg.fillRect(px, py, 26, 22, stallBgColor)
+        mapImg.drawRect(px, py, 26, 22, stallBorderColor)
+        let lx = i < 9 ? px + 10 : px + 7
+        mapImg.print("" + (i + 1), lx, py + 8, stallNumColor)
+    }
+    return mapImg
+}
 function dayOfFete () {
     adventure.addToTextlog("ITS THE DAY OF " + feteName.toUpperCase() + "!")
     if (weatherList.indexOf(currentWeather) <= 1) {
@@ -270,6 +326,12 @@ function dayOfFete () {
             adventure.addToTextlog("You raised £" + convertToText(stallNum * 50 * (280 / 2) / 100) + " for your school!")
             score = stallNum * 50 * (280 / 2) / 100
         }
+    }
+    adventure.addToTextlog("Here is a map of your fête grounds:")
+    adventure.addImageToTextLog(drawFeteMap())
+    let chosenStalls = stalls.filter(s => s.chosen == true)
+    for (let i = 0; i < chosenStalls.length; i++) {
+        adventure.addToTextlog("" + (i + 1) + ". " + chosenStalls[i].name)
     }
 }
 function wetWeather () {

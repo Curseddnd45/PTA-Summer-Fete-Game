@@ -218,7 +218,7 @@ function gameLoop () {
         pauseUntil(() => controller.anyButton.isPressed())
         adventure.changeLogColors(1, 5)
     }
-    adventure.addToTextlog("You are " + Weeks + " weeks away from your Summer Fête.")
+    adventure.addToTextlog("You are " + Weeks + " weeks away from " + feteName + ".")
     adventure.changeLogColors(1, 9)
     showWeather()
     adventure.addToTextlog("What do you want to do?")

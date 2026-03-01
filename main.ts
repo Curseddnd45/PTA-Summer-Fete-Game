@@ -770,7 +770,7 @@ stalls = [
 { name: "Feel Whats In The Box", chosen: false}
 ]
 game.splash("Press (A) to start!")
-feteName = feteNames._pickRandom()
+feteName = feteNames[randint(0, feteNames.length - 1)]
 adventure.addToTextlog("Welcome to...")
 music.play(music.createSoundEffect(WaveShape.Noise, 1, 5000, 255, 0, 2000, SoundExpressionEffect.Tremolo, InterpolationCurve.Linear), music.PlaybackMode.InBackground)
 adventure.addImageToTextLog(img`
@@ -896,6 +896,7 @@ adventure.addImageToTextLog(img`
     111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
     `)
 adventure.addToTextlog("..." + feteName + "!")
+pauseUntil(() => controller.anyButton.isPressed())
 adventure.clearTextLog()
 while (Weeks > 0) {
     gameLoop()

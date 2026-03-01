@@ -28,41 +28,6 @@ function htMeeting () {
         Meeting = 1
     }
 }
-function choiceSelector () {
-    if (_1stHalf == 1) {
-        adventure.addToTextlog("Press (A) to hold a PTA meeting.")
-        adventure.addToTextlog("Press (B) to advertise for volunteers.")
-        if (Meeting == 0) {
-            adventure.addToTextlog("Press (UP) to meet with the school.")
-        } else {
-            adventure.addToTextlog("Press (UP) to choose a stall.")
-        }
-        _1stHalf = 2
-        Weeks += -0.5
-    } else if (_2ndHalf == 1) {
-        adventure.addToTextlog("Press (B) to advertise for volunteers.")
-        if (Meeting == 0) {
-            adventure.addToTextlog("Press (UP) to meet with the school.")
-        } else {
-            adventure.addToTextlog("Press (UP) to choose a stall.")
-        }
-        _1stHalf = 1
-    } else if (_2ndHalf == 2) {
-        adventure.addToTextlog("Press (A) to hold a PTA meeting.")
-        if (Meeting == 0) {
-            adventure.addToTextlog("Press (UP) to meet with the school.")
-        } else {
-            adventure.addToTextlog("Press (UP) to choose a stall.")
-        }
-        _1stHalf = 1
-        Weeks += -0.5
-    } else if (_2ndHalf == 3) {
-        adventure.addToTextlog("Press (A) to hold a PTA meeting.")
-        adventure.addToTextlog("Press (B) to advertise for volunteers.")
-        _1stHalf = 1
-        Weeks += -0.5
-    }
-}
 function showWeather () {
     currentWeather = weatherList._pickRandom()
     adventure.addToTextlog("The long range weather forecast is showing " + currentWeather + " for the day of the fête:")
@@ -182,6 +147,90 @@ function showWeather () {
             `)
     }
 }
+function weeklyChallenge () {
+    music.stopAllSounds()
+    adventure.addImageToTextLog(img`
+        .............111111.............
+        ............1ffffff1............
+        ............1fffffff1...........
+        ...........1ffff5fff1...........
+        ...........1ffff5ffff1..........
+        ..........1ffff555fff1..........
+        ..........1fff5555ffff1.........
+        .........1fff555555ffff1........
+        ........1ffff5555555fff1........
+        ........1ffff5555555fff1........
+        ........1ffff55555555fff1.......
+        .......1ffff555fff555fff1.......
+        .......1fff5555fff5555fff1......
+        .......1ff55555fff5555fff1......
+        ......1fff55555fff55555ff1......
+        ......1ff555555fff55555fff1.....
+        ......1ff555555fff555555ff1.....
+        .....1fff555555fff555555fff1....
+        ....1fff5555555fff555555ffff1...
+        ....1fff5555555fff5555555fff1...
+        ...1ffff5555555fff5555555ffff1..
+        ..1ffff55555555fff55555555fff1..
+        ..1ffff55555555555555555555fff1.
+        ..1fff555555555555555555555fff1.
+        .1ffff555555555fff5555555555fff1
+        1ffff5555555555fff5555555555fff1
+        1ffff5555555555fff55555555555ff1
+        1fff5555555555555555555555555ff1
+        1ff555555555555555555555555555f1
+        1ff555555555555555555555555555f1
+        1ffffffffffffffffffffffffffffff1
+        11111111111111111111111111111111
+        `)
+    adventure.changeLogColors(5, 9)
+    music.play(music.createSoundEffect(WaveShape.Noise, 2500, 0, 255, 255, 1000, SoundExpressionEffect.Vibrato, InterpolationCurve.Logarithmic), music.PlaybackMode.InBackground)
+    timer.background(function () {
+        pause(1000)
+        music.play(music.createSong(assets.song`Main Theme`), music.PlaybackMode.LoopingInBackground)
+    })
+    adventure.addToTextlog("Challenge To Overcome This Week")
+    adventure.changeLogColors(5, 5)
+    adventure.addToTextlog("Oh no! One of your volunteers is moving house.")
+    adventure.addToTextlog("You lose 1 volunteer. Press any button to continue.")
+    volunteers += -1
+    volunteersIcon.setText(convertToText(volunteers))
+}
+function choiceSelector () {
+    if (_1stHalf == 1) {
+        adventure.addToTextlog("Press (A) to hold a PTA meeting.")
+        adventure.addToTextlog("Press (B) to advertise for volunteers.")
+        if (Meeting == 0) {
+            adventure.addToTextlog("Press (UP) to meet with the school.")
+        } else {
+            adventure.addToTextlog("Press (UP) to choose a stall.")
+        }
+        _1stHalf = 2
+        Weeks += -0.5
+    } else if (_2ndHalf == 1) {
+        adventure.addToTextlog("Press (B) to advertise for volunteers.")
+        if (Meeting == 0) {
+            adventure.addToTextlog("Press (UP) to meet with the school.")
+        } else {
+            adventure.addToTextlog("Press (UP) to choose a stall.")
+        }
+        _1stHalf = 1
+    } else if (_2ndHalf == 2) {
+        adventure.addToTextlog("Press (A) to hold a PTA meeting.")
+        if (Meeting == 0) {
+            adventure.addToTextlog("Press (UP) to meet with the school.")
+        } else {
+            adventure.addToTextlog("Press (UP) to choose a stall.")
+        }
+        _1stHalf = 1
+        Weeks += -0.5
+    } else if (_2ndHalf == 3) {
+        adventure.addToTextlog("Press (A) to hold a PTA meeting.")
+        adventure.addToTextlog("Press (B) to advertise for volunteers.")
+        _1stHalf = 1
+        Weeks += -0.5
+    }
+}
 function gameLoop () {
     music.stopAllSounds()
     music.play(music.createSong(assets.song`Main Theme`), music.PlaybackMode.LoopingInBackground)
@@ -243,62 +292,6 @@ function gameLoop () {
         }
     }
 }
-function drawFeteMap (): Image {
-    let mapImg = image.create(160, 120)
-    let bgColor = 7
-    let pathColor = 13
-    let buildingColor = 8
-    let buildingLabel = "SCHOOL"
-    let buildingLabelX = 37
-    let buildingTextColor = 1
-    let entranceColor = 6
-    let stallBgColor = 5
-    let stallNumColor = 14
-    let stallBorderColor = 1
-    if (feteName == "The Fête Worse Than Death") {
-        bgColor = 14
-        pathColor = 2
-        buildingColor = 15
-        buildingLabel = "DOOM HALL"
-        buildingLabelX = 27
-        buildingTextColor = 2
-        entranceColor = 4
-        stallBgColor = 10
-        stallNumColor = 1
-        stallBorderColor = 2
-    } else if (feteName.indexOf("Zx") >= 0) {
-        bgColor = 6
-        pathColor = 9
-        buildingColor = 10
-        buildingLabel = "MOTHERSHIP"
-        buildingLabelX = 22
-        buildingTextColor = 5
-        entranceColor = 8
-        stallBgColor = 3
-        stallNumColor = 14
-        stallBorderColor = 5
-    }
-    mapImg.fill(bgColor)
-    mapImg.fillRect(0, 0, 110, 28, buildingColor)
-    mapImg.print(buildingLabel, buildingLabelX, 11, buildingTextColor)
-    mapImg.fillRect(112, 0, 48, 28, entranceColor)
-    mapImg.print("ENTRANCE", 113, 11, buildingTextColor)
-    mapImg.fillRect(0, 28, 160, 5, pathColor)
-    let chosenStalls = stalls.filter(s => s.chosen == true)
-    let stallXPos = [2, 34, 66, 98, 130]
-    let stallYPos = [34, 62, 90]
-    for (let i = 0; i < chosenStalls.length && i < 15; i++) {
-        let col = i % 5
-        let row = Math.floor(i / 5)
-        let px = stallXPos[col]
-        let py = stallYPos[row]
-        mapImg.fillRect(px, py, 26, 22, stallBgColor)
-        mapImg.drawRect(px, py, 26, 22, stallBorderColor)
-        let lx = i < 9 ? px + 10 : px + 7
-        mapImg.print("" + (i + 1), lx, py + 8, stallNumColor)
-    }
-    return mapImg
-}
 function dayOfFete () {
     adventure.addToTextlog("ITS THE DAY OF " + feteName.toUpperCase() + "!")
     if (weatherList.indexOf(currentWeather) <= 1) {
@@ -329,9 +322,9 @@ function dayOfFete () {
     }
     adventure.addToTextlog("Here is a map of your fête grounds:")
     adventure.addImageToTextLog(drawFeteMap())
-    let chosenStalls = stalls.filter(s => s.chosen == true)
-    for (let i = 0; i < chosenStalls.length; i++) {
-        adventure.addToTextlog("" + (i + 1) + ". " + chosenStalls[i].name)
+    let chosenStalls2 = stalls.filter(s => s.chosen == true)
+for (let j = 0; j <= chosenStalls2.length - 1; j++) {
+        adventure.addToTextlog("" + (j + 1) + ". " + chosenStalls2[j].name)
     }
 }
 function wetWeather () {
@@ -366,6 +359,7 @@ function chooseStall () {
             `)
         if (volunteers >= 2) {
             music.stopAllSounds()
+            music.play(music.createSong(assets.song`stalls`), music.PlaybackMode.LoopingInBackground)
             adventure.addToTextlog("Which stall would you like?")
             visibleStalls = []
             shuffledStalls = hello.shuffleArray(stalls.filter(s => s.chosen == false))
@@ -406,9 +400,9 @@ stallNum += 1
                         occupiedVolunteersIcon.setText(convertToText(occupiedVolunteers))
                         adventure.addToTextlog("You have added " + stalls[r].name + ".")
                         currentStalls = []
-                        for (let i = 0; i <= stalls.length - 1; i++) {
-                            if (stalls[i].chosen == true) {
-                                currentStalls.push(stalls[i].name)
+                        for (let k = 0; k <= stalls.length - 1; k++) {
+                            if (stalls[k].chosen == true) {
+                                currentStalls.push(stalls[k].name)
                             }
                         }
                         adventure.addToTextlog("You now have " + currentStalls.join(", ") + ".")
@@ -426,9 +420,9 @@ stallNum += 1
                         occupiedVolunteersIcon.setText(convertToText(occupiedVolunteers))
                         adventure.addToTextlog("You have added " + stalls[s].name + ".")
                         currentStalls = []
-                        for (let j = 0; j <= stalls.length - 1; j++) {
-                            if (stalls[j].chosen == true) {
-                                currentStalls.push(stalls[j].name)
+                        for (let l = 0; l <= stalls.length - 1; l++) {
+                            if (stalls[l].chosen == true) {
+                                currentStalls.push(stalls[l].name)
                             }
                         }
                         adventure.addToTextlog("You now have " + currentStalls.join(", ") + ".")
@@ -490,21 +484,27 @@ function showOption () {
     events = hello.shuffleArray(events)
     option = events.slice(0, 1)
 events.splice(0, 1)
-for (let k = 0; k <= option.length - 1; k++) {
-        adventure.addToTextlog("" + `${option[k].text}` + " Press any key to continue.")
-        if (option[k].type == "V") {
-            volunteers += option[k].amount
-            if (volunteers < 0) { volunteers = 0 }
+for (let m = 0; m <= option.length - 1; m++) {
+        adventure.addToTextlog("" + `${option[m].text}` + " Press any key to continue.")
+        if (option[m].type == "V") {
+            volunteers += option[m].amount
+            if (volunteers < 0) {
+                volunteers = 0
+            }
             volunteersIcon.setText(convertToText(volunteers))
-        } else if (option[k].type == "S") {
-            stallNum += option[k].amount
-            if (stallNum < 0) { stallNum = 0 }
+        } else if (option[m].type == "S") {
+            stallNum += option[m].amount
+            if (stallNum < 0) {
+                stallNum = 0
+            }
             stallsIcon.setText(convertToText(stallNum))
-        } else if (option[k].type == "W") {
-            Weeks += option[k].amount
-        } else if (option[k].type == "A") {
-            volunteers += option[k].amount
-            if (volunteers < 0) { volunteers = 0 }
+        } else if (option[m].type == "W") {
+            Weeks += option[m].amount
+        } else if (option[m].type == "A") {
+            volunteers += option[m].amount
+            if (volunteers < 0) {
+                volunteers = 0
+            }
             volunteersIcon.setText(convertToText(volunteers))
             volunteersIcon.setIcon(assets.image`Alien`)
             occupiedVolunteersIcon.setIcon(assets.image`occupiedAliens`)
@@ -565,55 +565,81 @@ function volunteerOutcomes () {
         }
     }
 }
-function weeklyChallenge () {
-    music.stopAllSounds()
-    adventure.addImageToTextLog(img`
-        .............111111.............
-        ............1ffffff1............
-        ............1fffffff1...........
-        ...........1ffff5fff1...........
-        ...........1ffff5ffff1..........
-        ..........1ffff555fff1..........
-        ..........1fff5555ffff1.........
-        .........1fff555555ffff1........
-        ........1ffff5555555fff1........
-        ........1ffff5555555fff1........
-        ........1ffff55555555fff1.......
-        .......1ffff555fff555fff1.......
-        .......1fff5555fff5555fff1......
-        .......1ff55555fff5555fff1......
-        ......1fff55555fff55555ff1......
-        ......1ff555555fff55555fff1.....
-        ......1ff555555fff555555ff1.....
-        .....1fff555555fff555555fff1....
-        ....1fff5555555fff555555ffff1...
-        ....1fff5555555fff5555555fff1...
-        ...1ffff5555555fff5555555ffff1..
-        ..1ffff55555555fff55555555fff1..
-        ..1ffff55555555555555555555fff1.
-        ..1fff555555555555555555555fff1.
-        .1ffff555555555fff5555555555fff1
-        1ffff5555555555fff5555555555fff1
-        1ffff5555555555fff55555555555ff1
-        1fff5555555555555555555555555ff1
-        1ff555555555555555555555555555f1
-        1ff555555555555555555555555555f1
-        1ffffffffffffffffffffffffffffff1
-        11111111111111111111111111111111
-        `)
-    adventure.changeLogColors(5, 9)
-    music.play(music.createSoundEffect(WaveShape.Noise, 2500, 0, 255, 255, 1000, SoundExpressionEffect.Vibrato, InterpolationCurve.Logarithmic), music.PlaybackMode.InBackground)
-    timer.background(function () {
-        pause(1000)
-        music.play(music.createSong(assets.song`Main Theme`), music.PlaybackMode.LoopingInBackground)
-    })
-    adventure.addToTextlog("Challenge To Overcome This Week")
-    adventure.changeLogColors(5, 5)
-    adventure.addToTextlog("Oh no! One of your volunteers is moving house.")
-    adventure.addToTextlog("You lose 1 volunteer. Press any button to continue.")
-    volunteers += -1
-    volunteersIcon.setText(convertToText(volunteers))
+function drawFeteMap () {
+    mapImg = image.create(160, 120)
+    bgColor = 7
+    pathColor = 13
+    buildingColor = 8
+    buildingLabel = "SCHOOL"
+    buildingLabelX = 37
+    buildingTextColor = 1
+    entranceColor = 6
+    stallBgColor = 5
+    stallNumColor = 14
+    stallBorderColor = 1
+    if (feteName == "The Fête Worse Than Death") {
+        bgColor = 14
+        pathColor = 2
+        buildingColor = 15
+        buildingLabel = "DOOM HALL"
+        buildingLabelX = 27
+        buildingTextColor = 2
+        entranceColor = 4
+        stallBgColor = 10
+        stallNumColor = 1
+        stallBorderColor = 2
+    } else if (feteName.indexOf("Zx") >= 0) {
+        bgColor = 6
+        pathColor = 9
+        buildingColor = 10
+        buildingLabel = "MOTHERSHIP"
+        buildingLabelX = 22
+        buildingTextColor = 5
+        entranceColor = 8
+        stallBgColor = 3
+        stallNumColor = 14
+        stallBorderColor = 5
+    }
+    mapImg.fill(bgColor)
+    mapImg.fillRect(0, 0, 110, 28, buildingColor)
+    mapImg.print(buildingLabel, buildingLabelX, 11, buildingTextColor)
+mapImg.fillRect(112, 0, 48, 28, entranceColor)
+    mapImg.print("ENTRANCE", 113, 11, buildingTextColor)
+mapImg.fillRect(0, 28, 160, 5, pathColor)
+    let chosenStalls = stalls.filter(s => s.chosen == true)
+stallXPos = [
+    2,
+    34,
+    66,
+    98,
+    130
+    ]
+    stallYPos = [34, 62, 90]
+    for (let i = 0; i < chosenStalls.length && i < 15; i++) {
+        let col = i % 5
+        let row = Math.floor(i / 5)
+        let px = stallXPos[col]
+        let py = stallYPos[row]
+        mapImg.fillRect(px, py, 26, 22, stallBgColor)
+        mapImg.drawRect(px, py, 26, 22, stallBorderColor)
+        let lx = i < 9 ? px + 10 : px + 7
+        mapImg.print("" + (i + 1), lx, py + 8, stallNumColor)
+    }
+return mapImg
 }
+let stallYPos: number[] = []
+let stallXPos: number[] = []
+let stallBorderColor = 0
+let stallNumColor = 0
+let stallBgColor = 0
+let entranceColor = 0
+let buildingTextColor = 0
+let buildingLabelX = 0
+let buildingLabel = ""
+let buildingColor = 0
+let pathColor = 0
+let bgColor = 0
+let mapImg: Image = null
 let occupiedVolunteers = 0
 let stallNum = 0
 let finalWeather = false
@@ -630,27 +656,27 @@ let Key_Binds: string[] = []
 let weatherList: string[] = []
 let Weeks = 0
 let _1stHalf = 0
-let currentStalls: string[] = []
-let score = 0
 let feteName = ""
-let feteNames: string[] = [
-    "The Spectacular Summer Fête",
-    "The Magnificent Midsummer Fête",
-    "The Grand Garden Fête",
-    "The Jolly July Jamboree",
-    "The Tremendous Tuck Shop Fête",
-    "The Whizzy Whizzbang Fête",
-    "The Dazzling Disco Fête",
-    "The Wobbly Wellies Fête",
-    "The Super Splatastic Fête",
-    "The Bubbly Bouncy Castle Bash",
-    "The Marvellous Muddy Fête",
-    "The Absurdly Amazing Annual Fête",
-    "The Very Important Fête Indeed",
-    "The Utterly Splendid Fête of Splendour",
-    "The Gloriously Chaotic Summer Fête",
-    "The Fête Worse Than Death",
-    "Zx'Qlarb's Annual Human Gathering Ritual"
+let score = 0
+let currentStalls: string[] = []
+let feteNames = [
+"The Spectacular Summer Fête",
+"The Magnificent Midsummer Fête",
+"The Grand Garden Fête",
+"The Jolly July Jamboree",
+"The Tremendous Tuck Shop Fête",
+"The Whizzy Whizzbang Fête",
+"The Dazzling Disco Fête",
+"The Wobbly Wellies Fête",
+"The Super Splatastic Fête",
+"The Bubbly Bouncy Castle Bash",
+"The Marvellous Muddy Fête",
+"The Absurdly Amazing Annual Fête",
+"The Very Important Fête Indeed",
+"The Utterly Splendid Fête of Splendour",
+"The Gloriously Chaotic Summer Fête",
+"The Fête Worse Than Death",
+"Zx'Qlarb's Annual Human Gathering Ritual"
 ]
 game.onGameOver(function () {
     console.log("score:" + score)
@@ -658,11 +684,11 @@ game.onGameOver(function () {
 namespace hello {
     //% block
     export function shuffleArray(arr: any[]) {
-        for (let m = arr.length - 1; m > 0; m--) {
-            const n = Math.randomRange(0, m)
-            const temp = arr[m]
-            arr[m] = arr[n]
-            arr[n] = temp
+        for (let n = arr.length - 1; n > 0; n--) {
+            const o = Math.randomRange(0, n)
+            const temp = arr[n]
+            arr[n] = arr[o]
+            arr[o] = temp
         }
         return arr
     }
@@ -895,11 +921,11 @@ adventure.addImageToTextLog(img`
     111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
     111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
     `)
-adventure.addToTextlog("..." + feteName + "!")
+adventure.addToTextlog("...Summer Fête Game!")
+adventure.addToTextlog("Your fête is called " + feteName + "!")
 adventure.clearTextLog()
 while (Weeks > 0) {
     gameLoop()
 }
 dayOfFete()
-pauseUntil(() => controller.anyButton.isPressed())
 game.over(true)

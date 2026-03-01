@@ -494,14 +494,17 @@ for (let k = 0; k <= option.length - 1; k++) {
         adventure.addToTextlog("" + `${option[k].text}` + " Press any key to continue.")
         if (option[k].type == "V") {
             volunteers += option[k].amount
+            if (volunteers < 0) { volunteers = 0 }
             volunteersIcon.setText(convertToText(volunteers))
         } else if (option[k].type == "S") {
             stallNum += option[k].amount
+            if (stallNum < 0) { stallNum = 0 }
             stallsIcon.setText(convertToText(stallNum))
         } else if (option[k].type == "W") {
             Weeks += option[k].amount
         } else if (option[k].type == "A") {
             volunteers += option[k].amount
+            if (volunteers < 0) { volunteers = 0 }
             volunteersIcon.setText(convertToText(volunteers))
             volunteersIcon.setIcon(assets.image`Alien`)
             occupiedVolunteersIcon.setIcon(assets.image`occupiedAliens`)
@@ -898,3 +901,5 @@ while (Weeks > 0) {
     gameLoop()
 }
 dayOfFete()
+pauseUntil(() => controller.anyButton.isPressed())
+game.over(true)

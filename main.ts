@@ -244,7 +244,7 @@ function gameLoop () {
     }
 }
 function dayOfFete () {
-    adventure.addToTextlog("ITS THE DAY OF YOUR FÊTE!")
+    adventure.addToTextlog("ITS THE DAY OF " + feteName.toUpperCase() + "!")
     if (weatherList.indexOf(currentWeather) <= 1) {
         adventure.addToTextlog("The weather is " + currentWeather + " today!")
         adventure.addToTextlog("This is good!")
@@ -567,6 +567,26 @@ let Weeks = 0
 let _1stHalf = 0
 let currentStalls: string[] = []
 let score = 0
+let feteName = ""
+let feteNames: string[] = [
+    "The Spectacular Summer Fête",
+    "The Magnificent Midsummer Fête",
+    "The Grand Garden Fête",
+    "The Jolly July Jamboree",
+    "The Tremendous Tuck Shop Fête",
+    "The Whizzy Whizzbang Fête",
+    "The Dazzling Disco Fête",
+    "The Wobbly Wellies Fête",
+    "The Super Splatastic Fête",
+    "The Bubbly Bouncy Castle Bash",
+    "The Marvellous Muddy Fête",
+    "The Absurdly Amazing Annual Fête",
+    "The Very Important Fête Indeed",
+    "The Utterly Splendid Fête of Splendour",
+    "The Gloriously Chaotic Summer Fête",
+    "The Fête Worse Than Death",
+    "Zx'Qlarb's Annual Human Gathering Ritual"
+]
 game.onGameOver(function () {
     console.log("score:" + score)
 })
@@ -685,6 +705,7 @@ stalls = [
 { name: "Feel Whats In The Box", chosen: false}
 ]
 game.splash("Press (A) to start!")
+feteName = feteNames._pickRandom()
 adventure.addToTextlog("Welcome to...")
 music.play(music.createSoundEffect(WaveShape.Noise, 1, 5000, 255, 0, 2000, SoundExpressionEffect.Tremolo, InterpolationCurve.Linear), music.PlaybackMode.InBackground)
 adventure.addImageToTextLog(img`
@@ -809,7 +830,7 @@ adventure.addImageToTextLog(img`
     111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
     111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
     `)
-adventure.addToTextlog("...Summer Fête Game!")
+adventure.addToTextlog("..." + feteName + "!")
 adventure.clearTextLog()
 while (Weeks > 0) {
     gameLoop()

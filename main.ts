@@ -1,18 +1,14 @@
 function ptaMeeting () {
-    if (_2ndHalf == 2 || _2ndHalf == 0 || _2ndHalf == 3 || _1stHalf == 1) {
-        Coluntttters = randint(0, 5)
-        adventure.addToTextlog("" + Coluntttters + " PTA members have confirmed they can volunteer at the fête.")
-        Voulenteers += Coluntttters
-        voluntersIcon.setText(convertToText(Voulenteers))
+    if (_2ndHalf == 2 || _2ndHalf == 0 || _2ndHalf == 3) {
+        volunteerCount = randint(0, 5)
+        adventure.addToTextlog("" + volunteerCount + " PTA members have confirmed they can volunteer at the fête.")
+        volunteers += volunteerCount
+        volunteersIcon.setText(convertToText(volunteers))
         _2ndHalf = 1
-    }
-    if (!(Weeks % 1 == 0)) {
-        console.log(convertToText(Weeks))
-        console.log("Test")
     }
 }
 function advertiseVolunteers () {
-    if (_2ndHalf == 1 || (_2ndHalf == 0 || _2ndHalf == 3 || _1stHalf == 1)) {
+    if (_2ndHalf == 1 || _2ndHalf == 0 || _2ndHalf == 3) {
         if (Meeting == 1) {
             adventure.addToTextlog("You advertise.")
             _2ndHalf = 2
@@ -25,7 +21,7 @@ function advertiseVolunteers () {
     }
 }
 function htMeeting () {
-    if (_2ndHalf == 1 || (_2ndHalf == 0 || _2ndHalf == 2 || _1stHalf == 1)) {
+    if (_2ndHalf == 1 || _2ndHalf == 0 || _2ndHalf == 2) {
         adventure.addToTextlog("You organise a meeting with your head teacher to talk through your plans for the day.")
         adventure.addToTextlog("The school are supportive and agree the timings and a date.")
         _2ndHalf = 3
@@ -67,10 +63,10 @@ function choiceSelector () {
         Weeks += -0.5
     }
 }
-function weather () {
-    vether = weather_list._pickRandom()
-    adventure.addToTextlog("The long range weather forecast is showing " + vether + " for the day of the fête:")
-    if (vether == "sunny with blue skies") {
+function showWeather () {
+    currentWeather = weatherList._pickRandom()
+    adventure.addToTextlog("The long range weather forecast is showing " + currentWeather + " for the day of the fête:")
+    if (currentWeather == "sunny with blue skies") {
         adventure.addImageToTextLog(img`
             9 5 9 5 9 5 9 5 9 9 9 9 9 1 1 1 
             5 9 5 5 5 5 5 9 5 9 9 9 9 1 1 1 
@@ -89,7 +85,7 @@ function weather () {
             9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
             9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
             `)
-    } else if (vether == "sunny and cloudy") {
+    } else if (currentWeather == "sunny and cloudy") {
         adventure.addImageToTextLog(img`
             9 5 9 1 1 1 1 1 1 1 1 1 1 1 1 1 
             5 9 5 1 1 1 1 1 1 1 1 1 1 1 1 1 
@@ -108,7 +104,7 @@ function weather () {
             9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
             9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
             `)
-    } else if (vether == "a lightning storm") {
+    } else if (currentWeather == "a lightning storm") {
         adventure.addImageToTextLog(img`
             b b b b b b b b b b b b b b b b 
             b b b b b b b b b b b b b b b b 
@@ -127,7 +123,7 @@ function weather () {
             6 6 5 5 6 6 6 6 6 6 6 6 6 6 6 6 
             6 5 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
             `)
-    } else if (vether == "windy weather") {
+    } else if (currentWeather == "windy weather") {
         adventure.addImageToTextLog(img`
             1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
             1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
@@ -146,7 +142,7 @@ function weather () {
             6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
             6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
             `)
-    } else if (vether == "heavy rain") {
+    } else if (currentWeather == "heavy rain") {
         adventure.addImageToTextLog(img`
             b b b b b b b b b b b b b b b b 
             b b b b b b b b b b b b b b b b 
@@ -165,7 +161,7 @@ function weather () {
             6 6 6 6 6 8 6 6 6 6 6 6 8 6 6 6 
             6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
             `)
-    } else if (vether == "a drizzle") {
+    } else if (currentWeather == "a drizzle") {
         adventure.addImageToTextLog(img`
             1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
             1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
@@ -189,7 +185,11 @@ function weather () {
 function gameLoop () {
     music.stopAllSounds()
     music.play(music.createSong(assets.song`Main Theme`), music.PlaybackMode.LoopingInBackground)
-    if (Weeks == 7) {
+    if (Weeks == 8) {
+        showOption()
+        pauseUntil(() => controller.anyButton.isPressed())
+        adventure.changeLogColors(1, 5)
+    } else if (Weeks == 7) {
         showOption()
         pauseUntil(() => controller.anyButton.isPressed())
         adventure.changeLogColors(1, 5)
@@ -206,7 +206,7 @@ function gameLoop () {
         pauseUntil(() => controller.anyButton.isPressed())
         adventure.changeLogColors(1, 5)
     } else if (Weeks == 3) {
-        wk7()
+        weeklyChallenge()
         pauseUntil(() => controller.anyButton.isPressed())
         adventure.changeLogColors(1, 5)
     } else if (Weeks == 2) {
@@ -220,7 +220,7 @@ function gameLoop () {
     }
     adventure.addToTextlog("You are " + Weeks + " weeks away from your Summer Fête.")
     adventure.changeLogColors(1, 9)
-    weather()
+    showWeather()
     adventure.addToTextlog("What do you want to do?")
     choiceSelector()
     if (Weeks % 1 == 0 && wet == 0) {
@@ -245,17 +245,17 @@ function gameLoop () {
 }
 function dayOfFete () {
     adventure.addToTextlog("ITS THE DAY OF YOUR FÊTE!")
-    if (weather_list.indexOf(vether) <= 2) {
-        adventure.addToTextlog("The weather is " + vether + " today!")
+    if (weatherList.indexOf(currentWeather) <= 1) {
+        adventure.addToTextlog("The weather is " + currentWeather + " today!")
         adventure.addToTextlog("This is good!")
         finalWeather = true
     } else {
-        adventure.addToTextlog("The weather is " + vether + " today.")
+        adventure.addToTextlog("The weather is " + currentWeather + " today.")
         adventure.addToTextlog("Unlucky!")
         finalWeather = false
     }
-    adventure.addToTextlog("In total you have " + convertToText(Voulenteers + stallNum * 2) + " volunteers.")
-    adventure.addToTextlog("" + convertToText(Voulenteers) + " volunteers free and " + convertToText(stallNum) + " stalls.")
+    adventure.addToTextlog("In total you have " + convertToText(volunteers + stallNum * 2) + " volunteers.")
+    adventure.addToTextlog("" + convertToText(volunteers) + " volunteers free and " + convertToText(stallNum) + " stalls.")
     if (finalWeather == true) {
         adventure.addToTextlog("560 people came to your fête!")
         adventure.addToTextlog("You raised £" + convertToText(stallNum * 50 * (560 / 2) / 100) + " for your school!")
@@ -280,6 +280,7 @@ function wetWeather () {
     adventure.addToTextlog("WOOHOO!")
     wet = 1
     _1stHalf = 1
+    Weeks += -0.5
 }
 function chooseStall () {
     if (_2ndHalf == 2 || _2ndHalf == 1 || _1stHalf == 1) {
@@ -301,32 +302,28 @@ function chooseStall () {
             e e f f f f f f f f f f f f e e 
             e e f f f f f f f f f f f f e e 
             `)
-        if (Voulenteers >= 2) {
+        if (volunteers >= 2) {
             music.stopAllSounds()
             adventure.addToTextlog("Which stall would you like?")
-            visibleStallList = []
-            shuffleStall = hello.shuffleArray(stalls)
-            for (let g = 0; g <= stalls.length - 1; g++) {
-                if (stalls[g].chosen == true) {
-                    shuffleStall.removeAt(g)
-                }
-            }
-            visibleStallList = shuffleStall.slice(0, 3)
-for (let f = 0; f <= visibleStallList.length - 1; f++) {
-                adventure.addToTextlog("" + Key_Binds[f] + visibleStallList[f].name + ".")
+            visibleStalls = []
+            shuffledStalls = hello.shuffleArray(stalls.filter(s => s.chosen == false))
+            visibleStalls = shuffledStalls.slice(0, 3)
+for (let f = 0; f <= visibleStalls.length - 1; f++) {
+                adventure.addToTextlog("" + Key_Binds[f] + visibleStalls[f].name + ".")
             }
             pauseUntil(() => controller.anyButton.isPressed())
             if (controller.A.isPressed()) {
                 for (let q = 0; q <= stalls.length - 1; q++) {
-                    if (stalls[q].name == visibleStallList[0].name) {
+                    if (stalls[q].name == visibleStalls[0].name) {
                         stalls[q].chosen = true
 stallNum += 1
-                        stralsIcon.setText(convertToText(stallNum))
-                        Voulenteers += -2
-                        voluntersIcon.setText(convertToText(Voulenteers))
+                        stallsIcon.setText(convertToText(stallNum))
+                        volunteers += -2
+                        volunteersIcon.setText(convertToText(volunteers))
                         occupiedVolunteers += 2
                         occupiedVolunteersIcon.setText(convertToText(occupiedVolunteers))
                         adventure.addToTextlog("You have added " + stalls[q].name + ".")
+                        currentStalls = []
                         for (let h = 0; h <= stalls.length - 1; h++) {
                             if (stalls[h].chosen == true) {
                                 currentStalls.push(stalls[h].name)
@@ -337,15 +334,16 @@ stallNum += 1
                 }
             } else if (controller.B.isPressed()) {
                 for (let r = 0; r <= stalls.length - 1; r++) {
-                    if (stalls[r].name == visibleStallList[1].name) {
+                    if (stalls[r].name == visibleStalls[1].name) {
                         stalls[r].chosen = true
 stallNum += 1
-                        stralsIcon.setText(convertToText(stallNum))
-                        Voulenteers += -2
-                        voluntersIcon.setText(convertToText(Voulenteers))
+                        stallsIcon.setText(convertToText(stallNum))
+                        volunteers += -2
+                        volunteersIcon.setText(convertToText(volunteers))
                         occupiedVolunteers += 2
                         occupiedVolunteersIcon.setText(convertToText(occupiedVolunteers))
                         adventure.addToTextlog("You have added " + stalls[r].name + ".")
+                        currentStalls = []
                         for (let i = 0; i <= stalls.length - 1; i++) {
                             if (stalls[i].chosen == true) {
                                 currentStalls.push(stalls[i].name)
@@ -356,15 +354,16 @@ stallNum += 1
                 }
             } else if (controller.up.isPressed()) {
                 for (let s = 0; s <= stalls.length - 1; s++) {
-                    if (stalls[s].name == visibleStallList[2].name) {
+                    if (stalls[s].name == visibleStalls[2].name) {
                         stalls[s].chosen = true
 stallNum += 1
-                        stralsIcon.setText(convertToText(stallNum))
-                        Voulenteers += -2
-                        voluntersIcon.setText(convertToText(Voulenteers))
+                        stallsIcon.setText(convertToText(stallNum))
+                        volunteers += -2
+                        volunteersIcon.setText(convertToText(volunteers))
                         occupiedVolunteers += 2
                         occupiedVolunteersIcon.setText(convertToText(occupiedVolunteers))
                         adventure.addToTextlog("You have added " + stalls[s].name + ".")
+                        currentStalls = []
                         for (let j = 0; j <= stalls.length - 1; j++) {
                             if (stalls[j].chosen == true) {
                                 currentStalls.push(stalls[j].name)
@@ -375,7 +374,7 @@ stallNum += 1
                 }
             }
         } else {
-            adventure.addToTextlog("Sorry, you dont have enough volunteers. ")
+            adventure.addToTextlog("Sorry, you don't have enough volunteers.")
             adventure.addToTextlog("Each stall needs two volunteers.")
         }
         _2ndHalf = 3
@@ -426,23 +425,23 @@ function showOption () {
     adventure.addToTextlog("Challenge To Overcome This Week")
     adventure.changeLogColors(5, 5)
     option = []
-    goodOrBad = hello.shuffleArray(goodOrBad)
-    option = goodOrBad.slice(0, 1)
-goodOrBad.splice(0, 1)
+    events = hello.shuffleArray(events)
+    option = events.slice(0, 1)
+events.splice(0, 1)
 for (let k = 0; k <= option.length - 1; k++) {
         adventure.addToTextlog("" + `${option[k].text}` + " Press any key to continue.")
         if (option[k].type == "V") {
-            Voulenteers += option[k].amount
-            voluntersIcon.setText(convertToText(Voulenteers))
+            volunteers += option[k].amount
+            volunteersIcon.setText(convertToText(volunteers))
         } else if (option[k].type == "S") {
             stallNum += option[k].amount
-            stralsIcon.setText(convertToText(stallNum))
+            stallsIcon.setText(convertToText(stallNum))
         } else if (option[k].type == "W") {
             Weeks += option[k].amount
         } else if (option[k].type == "A") {
-            Voulenteers += option[k].amount
-            voluntersIcon.setText(convertToText(Voulenteers))
-            voluntersIcon.setIcon(assets.image`Alien`)
+            volunteers += option[k].amount
+            volunteersIcon.setText(convertToText(volunteers))
+            volunteersIcon.setIcon(assets.image`Alien`)
             occupiedVolunteersIcon.setIcon(assets.image`occupiedAliens`)
         }
     }
@@ -475,30 +474,33 @@ function volunteerOutcomes () {
     pauseUntil(() => controller.anyButton.isPressed())
     if (controller.A.isPressed()) {
         adventure.addToTextlog("You send out an E-mail to all the parents")
-        Coluntttters = randint(0, 2)
-        adventure.addToTextlog("" + Coluntttters + " parents have confirmed they can attend.")
-        Voulenteers += Coluntttters
-        voluntersIcon.setText(convertToText(Voulenteers))
+        volunteerCount = randint(0, 2)
+        adventure.addToTextlog("" + volunteerCount + " parents have confirmed they can attend.")
+        volunteers += volunteerCount
+        volunteersIcon.setText(convertToText(volunteers))
     } else if (controller.B.isPressed()) {
         adventure.addToTextlog("The only reply is a scammer.")
     } else if (controller.up.isPressed()) {
-        Coluntttters = randint(1, 3)
-        if (Coluntttters == 1) {
+        volunteerCount = randint(1, 3)
+        if (volunteerCount == 1) {
             adventure.addToTextlog("All the classes were out on a school trip, only your class was there.")
             adventure.addToTextlog("1 parent decided to join.")
-            Voulenteers += Coluntttters
-            voluntersIcon.setText(convertToText(Voulenteers))
-        } else if (Coluntttters == 2) {
+            volunteers += volunteerCount
+            volunteersIcon.setText(convertToText(volunteers))
+        } else if (volunteerCount == 2) {
             adventure.addToTextlog("2 new parents decided to make a good impression.")
             adventure.addToTextlog("They both decided to join.")
-            Voulenteers += Coluntttters
-            voluntersIcon.setText(convertToText(Voulenteers))
-        } else if (Coluntttters == 3) {
-            adventure.addToTextlog("2 new parents decided to make a good impression.")
+            volunteers += volunteerCount
+            volunteersIcon.setText(convertToText(volunteers))
+        } else if (volunteerCount == 3) {
+            adventure.addToTextlog("3 parents decided to make a good impression.")
+            adventure.addToTextlog("They all decided to join.")
+            volunteers += volunteerCount
+            volunteersIcon.setText(convertToText(volunteers))
         }
     }
 }
-function wk7 () {
+function weeklyChallenge () {
     music.stopAllSounds()
     adventure.addImageToTextLog(img`
         .............111111.............
@@ -544,23 +546,23 @@ function wk7 () {
     adventure.changeLogColors(5, 5)
     adventure.addToTextlog("Oh no! One of your volunteers is moving house.")
     adventure.addToTextlog("You lose 1 volunteer. Press any button to continue.")
-    Voulenteers += -1
-    voluntersIcon.setText(convertToText(Voulenteers))
+    volunteers += -1
+    volunteersIcon.setText(convertToText(volunteers))
 }
 let occupiedVolunteers = 0
 let stallNum = 0
 let finalWeather = false
 let wet = 0
-let vether = ""
+let currentWeather = ""
 let Meeting = 0
-let Coluntttters = 0
+let volunteerCount = 0
 let _2ndHalf = 0
-let stralsIcon: TextSprite = null
-let Voulenteers = 0
+let stallsIcon: TextSprite = null
+let volunteers = 0
 let occupiedVolunteersIcon: TextSprite = null
-let voluntersIcon: TextSprite = null
+let volunteersIcon: TextSprite = null
 let Key_Binds: string[] = []
-let weather_list: string[] = []
+let weatherList: string[] = []
 let Weeks = 0
 let _1stHalf = 0
 let currentStalls: string[] = []
@@ -568,7 +570,6 @@ let score = 0
 game.onGameOver(function () {
     console.log("score:" + score)
 })
-score = 0
 namespace hello {
     //% block
     export function shuffleArray(arr: any[]) {
@@ -590,14 +591,14 @@ interface Stall {
     name: string,
     chosen: boolean
 }
-let goodOrBad: list[]
+let events: list[]
 let stalls: Stall[]
 let option: list[]
-let visibleStallList: Stall[]
-let shuffleStall: Stall[]
+let visibleStalls: Stall[]
+let shuffledStalls: Stall[]
 _1stHalf = 1
 Weeks = 8
-weather_list = [
+weatherList = [
 "sunny with blue skies",
 "sunny and cloudy",
 "a drizzle",
@@ -606,56 +607,55 @@ weather_list = [
 "a lightning storm"
 ]
 Key_Binds = ["Press (A) for ", "Press (B) for ", "Press (UP) for "]
-voluntersIcon = textsprite.create("0")
+volunteersIcon = textsprite.create("0")
 occupiedVolunteersIcon = textsprite.create("0")
-Voulenteers = 0
-stralsIcon = textsprite.create("0")
-voluntersIcon.z = 11
+volunteers = 0
+stallsIcon = textsprite.create("0")
+volunteersIcon.z = 11
 occupiedVolunteersIcon.z = 11
-stralsIcon.z = 11
-voluntersIcon.setIcon(assets.image`Human`)
+stallsIcon.z = 11
+volunteersIcon.setIcon(assets.image`Human`)
 occupiedVolunteersIcon.setIcon(assets.image`occupiedHumans`)
-stralsIcon.setIcon(assets.image`Stalls`)
-voluntersIcon.setPosition(140, 10)
-stralsIcon.setPosition(140, 25)
+stallsIcon.setIcon(assets.image`Stalls`)
+volunteersIcon.setPosition(140, 10)
+stallsIcon.setPosition(140, 25)
 occupiedVolunteersIcon.setPosition(140, 40)
-voluntersIcon.setBorder(1, 3, 2)
+volunteersIcon.setBorder(1, 3, 2)
 occupiedVolunteersIcon.setBorder(1, 3, 2)
-stralsIcon.setBorder(1, 3, 2)
-voluntersIcon.setOutline(1, 6)
+stallsIcon.setBorder(1, 3, 2)
+volunteersIcon.setOutline(1, 6)
 occupiedVolunteersIcon.setOutline(1, 6)
-stralsIcon.setOutline(1, 6)
-currentStalls = ["a", "", ""]
+stallsIcon.setOutline(1, 6)
 currentStalls = []
-goodOrBad = [
+events = [
 { text: "2 of your parent volunteers pull out. Lose 2 volunteers.", type: "V", amount: -2 },
 { text: "Nobody has responded to your request for gazebos. You decide to cut out two stalls just in case everything has to fit inside the school.", type: "S", amount: -2 },
 { text: "Great news! Two people have volunteered to run the hot food stall and buy all the ingredients. Gain a hot food stall.", type: "S", amount: 1 },
 { text: "You are feeling overwhelmed by the length of your To Do list so you reach out to your PTA team. Three people offer to take some tasks off your hands. You gain 3 volunteers.", type: "V", amount: 3 },
 { text: "The teachers union announces a series of strikes, one of which would be on the day of the fête. If the strike goes ahead the school would have to close. Your headteacher suggests the best course of action is to postpone the fête.", type: "W", amount: 1 },
-{ text: "You buy your favourite drink and snack to have as a reward for after the fête and all your hard work. You label/hide them so your family doesnt accidentally eat them!", type: "N", amount: 0 },
+{ text: "You buy your favourite drink and snack to have as a reward for after the fête and all your hard work. You label/hide them so your family doesn't accidentally eat them!", type: "N", amount: 0 },
 { text: "Aargh! You burnt the cakes you made for the cake sale! You need to find time to go out and buy more ingredients and then time to make the cakes all over again.", type: "N", amount: 0 },
-{ text: "A company donates you an amazing prize worth a lot of money - and you dont know how to deal with it! You decide to run a game to win the prize separately - gain a stall.", type: "S", amount: 1 },
-{ text: "A sickness bug is sweeping round the school - it hasnt reached your family yet but there is still time! You remind your children how to wash their hands!!", type: "N", amount: 0 },
+{ text: "A company donates you an amazing prize worth a lot of money - and you don't know how to deal with it! You decide to run a game to win the prize separately - gain a stall.", type: "S", amount: 1 },
+{ text: "A sickness bug is sweeping round the school - it hasn't reached your family yet but there is still time! You remind your children how to wash their hands!!", type: "N", amount: 0 },
 { text: "A parent offers to make a show-stopper cake which you could raffle off - you decide to make a game of 100 squares to allow someone to win the cake. Gain a stall. ", type: "S", amount: 1 },
 { text: "Your head teacher has just reminded you that the school recently became a nut-free school. You need to check all the food and drink items again to make sure they are nut-free. Lose one volunteer to complete this task.", type: "V", amount: -1 },
-{ text: "The coffee van person phones to say he double-booked your event and now he cant make it. Lose one stall.", type: "S", amount: -1 },
+{ text: "The coffee van person phones to say he double-booked your event and now he can't make it. Lose one stall.", type: "S", amount: -1 },
 { text: "A supermarket Community champion donates your fête 100 free burgers and 100 free sausages for the BBQ. Get in!", type: "N", amount: 0 },
 { text: "A local music group confirms they will come and provide free entertainment for an hour of the fête. This encourages more people to attend.", type: "N", amount: 0 },
 { text: "One more volunteer has signed up to help.", type: "V", amount: 1 },
 { text: "A couple of parents donate 5 bin bags full of teddies - this is enough to run a Teddy Tombola stall - bonus!", type: "S", amount: 1 },
-{ text: "A PTA committee member tells you she has agreed for a school mum to bring items in to sell on a stall. The mum doesnt want to run the stall, she just wants to provide the items and let someone else sell them. This is an extra stall that you knew nothing about! What do you do now?", type: "S", amount: 1 },
+{ text: "A PTA committee member tells you she has agreed for a school mum to bring items in to sell on a stall. The mum doesn't want to run the stall, she just wants to provide the items and let someone else sell them. This is an extra stall that you knew nothing about! What do you do now?", type: "S", amount: 1 },
 { text: "3 Teaching assistants offer to volunteer for an hour each. Hooray - gain 3 volunteers!", type: "V", amount: 3 },
 { text: "A group of teachers say that they want to run a teacher stall. Gain another stall - hooray!", type: "S", amount: 1 },
-{ text: "You still cant find the tongs you used at a previous PTA event...they never made it back to your kitchen. Someone else offers to lend theirs. You suggest they label them clearly!", type: "N", amount: 0 },
+{ text: "You still can't find the tongs you used at a previous PTA event...they never made it back to your kitchen. Someone else offers to lend theirs. You suggest they label them clearly!", type: "N", amount: 0 },
 { text: "You look through the donations so far for the bottle tombola - only half the donations are useable as others are open, past the best before date or half used. Do you wait and see if you get more donations or do you cut your losses and use the bottles elsewhere? Decisions, decisions!", type: "N", amount: 0 },
 { text: "You remember that the hot water urn broke at the fête last year and was never replaced. You need a new plan for keeping water hot for tea and coffee at your cake stall.", type: "N", amount: 0 },
-{ text: "School has an event in the hall on the day of the fête so you cant use the hall until 1 hour before the event starts.", type: "N", amount: 0 },
+{ text: "School has an event in the hall on the day of the fête so you can't use the hall until 1 hour before the event starts.", type: "N", amount: 0 },
 { text: "Your PTA treasurer sends you an urgent message to say that they have only just noticed that the small lotteries licence has expired and you can only sell tickets for the raffle at the event, and not before hand.", type: "N", amount: 0 },
-{ text: "You try to inflate the paddling pool for hook-a-duck but it has a puncture and wont stay up! What do you do? You go off in search of some duck tape!", type: "N", amount: 0 },
+{ text: "You try to inflate the paddling pool for hook-a-duck but it has a puncture and won't stay up! What do you do? You go off in search of some duct tape!", type: "N", amount: 0 },
 { text: "The day before the fête, the Ofsted inspector turns up. You lose all your staff volunteers and the head teacher says the fête  needs to be postponed!", type: "W", amount: 1 },
 { text: "You realise that the wrong date has been put on all your publicity and marketing! Disaster! Lose a volunteer to try and sort this out.", type: "V", amount: -1 },
-{ text: "Despite your weeks of advertising, social media posts, requests for donations, emails, posters and flyers, a significant number of parents claim they didnt know the school was planning a fête. You hold your head in your hands and take deep breaths. Then carry on.", type: "N", amount: 0 },
+{ text: "Despite your weeks of advertising, social media posts, requests for donations, emails, posters and flyers, a significant number of parents claim they didn't know the school was planning a fête. You hold your head in your hands and take deep breaths. Then carry on.", type: "N", amount: 0 },
 { text: "Aliens come down from outer space, and ask to join the fête and help, 4 of them hide so they can help, but the others are taken away by the army.", type: "A", amount: 4 },
 { text: "Your friend misunderstands how to label the items for the tombola and makes it a game where each ticket drawn wins a prize. That stall only makes one third of the profit you were hoping for.", type: "N", amount: 0 }
 ]
